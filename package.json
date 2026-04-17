@@ -1,0 +1,10 @@
+{
+  "name": "presentacion-50-nudos",
+  "version": "1.0.0",
+  "description": "Presentación interactiva — 50 Nudos: Velocidad de Crucero — Concurso Comercial Torres Guarín × Seguros Bolívar 2026-2027",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve public",
+    "build": "echo 'Static site — no build needed'"
+  }
+}
