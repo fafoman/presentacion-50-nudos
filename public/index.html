@@ -73,11 +73,14 @@
 
     html {
       scroll-behavior: smooth;
+      /* Guarda contra overflow horizontal. Solo en <html>: si se aplica
+         también a <body>, body se vuelve scroll container y rompe el
+         header position: sticky. */
+      overflow-x: hidden;
     }
 
     html, body {
       width: 100%;
-      overflow-x: hidden;
       font-family: var(--font-body);
       background: var(--navy-deep);
       color: var(--text-spectral);
@@ -455,6 +458,15 @@
       max-width: var(--max-content);
       margin: 0 auto;
     }
+    .scroll-progress {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      box-shadow: 0 0 8px rgba(255, 213, 67, 0.4);
+    }
     .guide-brand {
       display: flex;
       align-items: baseline;
@@ -536,8 +548,10 @@
         align-items: center;
         justify-content: space-between;
       }
-      .guide-brand { padding: 14px 24px; }
-      .guide-nav { padding: 12px 24px; overflow: visible; }
+      .guide-brand { padding: 14px 24px; flex-shrink: 0; }
+      /* overflow-x: auto se conserva: entre 768 y ~960px los chips no caben
+         junto a la marca y deben poder desplazarse sin desbordar la página */
+      .guide-nav { padding: 12px 24px; min-width: 0; }
     }
 
     /* ============ BACK TO TOP ============ */
@@ -751,6 +765,11 @@
     @keyframes hintBob {
       0%, 100% { transform: translate(-50%, 0); }
       50% { transform: translate(-50%, 6px); }
+    }
+    .cover-hint .hint-desktop { display: none; }
+    @media (min-width: 768px) {
+      .cover-hint .hint-mobile { display: none; }
+      .cover-hint .hint-desktop { display: inline; }
     }
 
     /* ============ SLIDE 2: DOS RUTAS ============ */
@@ -2252,6 +2271,7 @@
         <a href="#contactos" data-section="contactos">Contactos</a>
       </nav>
     </div>
+    <div class="scroll-progress" id="scrollProgress"></div>
   </header>
 
   <div class="deck" id="deck">
@@ -2309,7 +2329,7 @@
           </svg>
         </div>
       </div>
-      <div class="cover-hint">DESLIZA PARA EXPLORAR ↓</div>
+      <div class="cover-hint"><span class="hint-mobile">DESLIZA PARA EXPLORAR ↓</span><span class="hint-desktop">DESLIZA O NAVEGA CON LAS FLECHAS ← →</span></div>
     </section>
 
     <!-- ============ SLIDE 2: DOS RUTAS ============ -->
@@ -3155,6 +3175,52 @@
 
     document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
 
+    // ---- Navegación por teclado: ← ↑ sección anterior · → ↓ espacio siguiente ----
+    const sections = Array.from(document.querySelectorAll('section.slide'));
+
+    function currentSectionIndex() {
+      // Offset = scroll-margin-top de las secciones + margen de tolerancia
+      const off = parseFloat(getComputedStyle(sections[0]).scrollMarginTop || '0') + 12;
+      let idx = 0;
+      sections.forEach((s, i) => {
+        if (s.getBoundingClientRect().top <= off) idx = i;
+      });
+      return idx;
+    }
+
+    function goToSectionIndex(i) {
+      if (i < 0 || i >= sections.length) return;
+      sections[i].scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      if (e.target.closest && e.target.closest('input, select, textarea, [contenteditable]')) return;
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+        case 'PageDown':
+        case ' ':
+          e.preventDefault();
+          goToSectionIndex(currentSectionIndex() + 1);
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+        case 'PageUp':
+          e.preventDefault();
+          goToSectionIndex(currentSectionIndex() - 1);
+          break;
+        case 'Home':
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+          break;
+        case 'End':
+          e.preventDefault();
+          goToSectionIndex(sections.length - 1);
+          break;
+      }
+    });
+
     // ---- Scroll-spy: resalta la sección activa en el header ----
     const navLinks = Array.from(document.querySelectorAll('.guide-nav a'));
     const navByName = {};
@@ -3166,8 +3232,9 @@
         const name = entry.target.dataset.section;
         const link = navByName[name];
         if (!link || link.classList.contains('active')) return;
-        navLinks.forEach(a => a.classList.remove('active'));
+        navLinks.forEach(a => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
         link.classList.add('active');
+        link.setAttribute('aria-current', 'true');
         // Centra el chip activo en móvil (el nav es scrolleable).
         // Scroll manual del contenedor: scrollIntoView sobre un hijo del
         // header sticky arrastra el scroll vertical de la página (quirk de Chromium).
@@ -3180,17 +3247,24 @@
 
     document.querySelectorAll('.slide[data-section]').forEach(s => spyIO.observe(s));
 
-    // ---- Volver arriba ----
+    // ---- Volver arriba + barra de progreso de lectura ----
     const backTop = document.getElementById('backTop');
+    const scrollProgress = document.getElementById('scrollProgress');
+    function onScroll() {
+      backTop.classList.toggle('show', window.scrollY > 600);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+    }
     let scrollTicking = false;
     window.addEventListener('scroll', () => {
       if (scrollTicking) return;
       scrollTicking = true;
       requestAnimationFrame(() => {
-        backTop.classList.toggle('show', window.scrollY > 600);
+        onScroll();
         scrollTicking = false;
       });
     }, { passive: true });
+    onScroll();
     backTop.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
     });
