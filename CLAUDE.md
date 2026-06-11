@@ -1,10 +1,10 @@
 # Instrucciones para Claude Code
 
-Este proyecto es una presentación HTML interactiva para el concurso comercial "50 Nudos — Velocidad de Crucero" de Torres Guarín × Seguros Bolívar.
+Este proyecto es la **guía de consulta web** del concurso comercial "50 Nudos — Velocidad de Crucero" de Torres Guarín × Seguros Bolívar. Nació como presentación de slides para proyector y fue convertida en un documento scrolleable de referencia (header sticky con índice de secciones, scroll-spy, reveals on-scroll).
 
 ## Archivos importantes que debes leer ANTES de escribir código:
 
-1. **PROMPT.md** — Instrucciones completas de qué construir, slide por slide
+1. **PROMPT.md** — Instrucciones originales del contenido, sección por sección
 2. **DESIGN.md** — Sistema de diseño con paleta, tipografía, componentes, y animaciones
 3. **DATA.md** — Todos los datos del concurso (mercado, metas, zonas, premios)
 4. **references/** — DESIGN.md de SpaceX, Lamborghini, y Apple como referencia estética
@@ -13,9 +13,12 @@ Este proyecto es una presentación HTML interactiva para el concurso comercial "
 
 Un solo archivo `public/index.html` con todo inline (CSS + JS + datos). Se despliega en Vercel como static site.
 
+## Estructura de la guía
+
+Secciones ancladas (ids): `#intro`, `#rutas`, `#ruta1`, `#ruta2`, `#final`, `#contactos`, `#cierre`. El atributo `data-section` de cada `<section>` alimenta el scroll-spy del header.
+
 ## Stack
 
-- HTML/CSS/JS vanilla (NO frameworks)
+- HTML/CSS/JS vanilla (NO frameworks, sin GSAP — IntersectionObserver + transiciones CSS)
 - Google Fonts via CDN
-- GSAP 3.12.5 via CDN para animaciones
-- Optimizado para proyector 16:9
+- Responsive / mobile-first: breakpoints 560px, 768px, 1024px (los vendedores la consultan en el celular)
