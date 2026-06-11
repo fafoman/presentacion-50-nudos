@@ -107,6 +107,7 @@ Dos rutas paralelas, un solo destino:
 - **Top 2:** $300.000
 - **Top 3:** $200.000
 - Se define por recaudo acumulado del mes
+- **Condición de elegibilidad:** solo participan quienes cumplan su meta mensual del ciclo; si nadie cumple la meta en una ruta, el bono no se otorga ese mes
 
 ### Niveles (Puertos)
 - 🥉 Bronce
