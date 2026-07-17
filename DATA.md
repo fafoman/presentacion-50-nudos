@@ -118,9 +118,9 @@ Dos rutas paralelas, un solo destino:
 
 ### Gran Premio
 - **Crucero por el Caribe**
-- **2 ganadores**, cada uno con acompañante
-- 1 ganador por Ruta 1 (líder de recaudo)
-- 1 ganador por Ruta 2 (líder porcentual)
+- **4 ganadores**, cada uno con acompañante (4 acompañantes)
+- Ruta 1 (Magisterio): 2 ganadores — 1 Director de Ventas + 1 Asesor de Ventas
+- Ruta 2 (SENA — UNAD): 2 ganadores — 1 Director de Ventas + 1 Asesor de Ventas
 - Criterios de selección alineados con estándares oficiales de Seguros Bolívar
 
 ---
