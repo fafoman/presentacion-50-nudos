@@ -119,8 +119,14 @@ Dos rutas paralelas, un solo destino:
 ### Gran Premio
 - **Crucero por el Caribe**
 - **4 ganadores**, cada uno con acompañante (4 acompañantes)
-- Ruta 1 (Magisterio): 2 ganadores — 1 Director de Ventas + 1 Asesor de Ventas
-- Ruta 2 (SENA — UNAD): 2 ganadores — 1 Director de Ventas + 1 Asesor de Ventas
+- Ruta 1 (Magisterio): 2 ganadores — 1 Director de Ventas + 1 Director Satélite
+- Ruta 2 (SENA — UNAD): 2 ganadores — 1 Director de Ventas + 1 Director Satélite
+- Un cupo cuya categoría no cumpla la condición queda **desierto**: no se traslada
+  a otra categoría ni se baja el requisito (decisión «Revisión Concurso», 9-sep-2026)
+- Los **asesores** no compiten por el crucero; sí por el bono mensual de su ruta
+- Condición de recaudo del gran premio: **[POR DEFINIR]** — se acordó ≥ 85 % de la
+  producción al corte, pero la base de recaudo real de Seguros Bolívar aún no existe
+  (hoy lo que se reporta como «recaudo» es producción/prima anualizada)
 - Criterios de selección alineados con estándares oficiales de Seguros Bolívar
 
 ---
